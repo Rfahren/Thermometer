@@ -1,0 +1,21 @@
+https://www.mathworks.com/examples/matlab/community/22390-experiment-7-reading-a-temperature-sensor
+
+a= arduino('COM6','Mega2560'); %% Not sure if i need this part
+
+%temp sensor pin
+tempPin='A0';
+tempCfromVolts=@(volts) (volts-0.5)*100;
+Duration=30;
+Interval=2;
+samplingTimes=0:Interval:Duration;
+numSamples=length(samplingTimes);
+tempC=zeros(numSamples,1);
+tempF=tempC;
+
+for index=1:numSamples
+	volts=readVoltage(a,tempPin);
+	tempC(index)=tempCfromVolts(volts);
+	tempF(index)=tempC(index)*9/5+32;
+	
+	fprintf('Temp at %d seconds is %5.2f C or %5.2 F \n',samplingTimes(index),tempC(index),tempF(index));
+end
